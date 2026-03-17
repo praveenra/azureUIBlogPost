@@ -175,13 +175,18 @@
               required
             />
           </div>
-          <button
+          <!-- <button
             type="submit"
             class="btn secondary"
             [disabled]="!selectedPost"
           >
             Add Comment
+          </button> -->
+          <div class="form-actions">
+          <button type="submit" class="btn primary">
+            Add Comment
           </button>
+        </div>
         </form>
         @if (commentError) {
           <div class="alert error small">{{ commentError }}</div>
