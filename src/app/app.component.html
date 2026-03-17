@@ -1,0 +1,192 @@
+<div class="app-shell">
+  <header class="app-header">
+    <div class="brand">
+      <span class="brand-pill">MCP</span>
+      <div>
+        <h1>MCP Blog</h1>
+        <p class="subtitle">A clean blog powered by your API. Create stories, share ideas, and showcase comments in real time.</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel posts-panel">
+      <div class="panel-header">
+        <h2>Posts</h2>
+        <button type="button" class="btn ghost" (click)="refreshPosts()">Refresh</button>
+      </div>
+      <div class="posts-list" [class.empty-state]="posts.length === 0 && !loading">
+        @if (loading) {
+          <p>Loading posts...</p>
+        } @else if (posts.length === 0) {
+          <p>No posts yet. Create your first post on the right.</p>
+        } @else {
+          @for (post of posts; track post._id) {
+            <article
+              class="post-item"
+              [class.selected]="selectedPost?._id === post._id"
+              (click)="selectPost(post)"
+            >
+              <div class="post-main">
+                <h3 class="post-title">{{ post.title }}</h3>
+                <p class="post-body">{{ post.body | slice:0:120 }}{{ post.body.length > 120 ? '...' : '' }}</p>
+              </div>
+              <div class="post-meta">
+                <span class="pill pill-category" [ngClass]="'pill-' + post.category">{{ post.category }}</span>
+                <span class="pill pill-author">{{ post.author }}</span>
+                <span class="pill pill-date">{{ formatDate(post.updatedAt || post.createdAt) }}</span>
+              </div>
+            </article>
+          }
+        }
+      </div>
+    </section>
+
+    <section class="panel editor-panel">
+      <div class="panel-header">
+        <h2 id="editorTitle">{{ selectedPost ? 'Edit Post' : 'Create Post' }}</h2>
+        <div class="editor-actions">
+          <button type="button" class="btn ghost small" (click)="newPost()">New</button>
+          <button
+            type="button"
+            class="btn danger small"
+            [disabled]="!selectedPost"
+            (click)="deletePost()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+
+      <form class="form" (ngSubmit)="savePost()" #postForm="ngForm">
+        <div class="field">
+          <label for="title">Title</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            [(ngModel)]="formModel.title"
+            placeholder="e.g. Building APIs with MCP"
+            required
+          />
+          <p class="hint">At least 5 characters.</p>
+        </div>
+
+        <div class="field">
+          <label for="author">Author</label>
+          <input
+            id="author"
+            name="author"
+            type="text"
+            [(ngModel)]="formModel.author"
+            placeholder="Your name"
+            required
+          />
+          <p class="hint">At least 3 characters.</p>
+        </div>
+
+        <div class="field">
+          <label for="category">Category</label>
+          <select id="category" name="category" [(ngModel)]="formModel.category" required>
+            <option value="">Select a category</option>
+            <option value="tech">Tech</option>
+            <option value="finance">Finance</option>
+            <option value="lifestyle">Lifestyle</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="body">Body</label>
+          <textarea
+            id="body"
+            name="body"
+            rows="6"
+            [(ngModel)]="formModel.body"
+            placeholder="Write something interesting about your topic..."
+            required
+          ></textarea>
+          <p class="hint">At least 50 characters.</p>
+        </div>
+
+        @if (postError) {
+          <div class="alert error">{{ postError }}</div>
+        }
+        @if (postSuccess) {
+          <div class="alert success">{{ postSuccess }}</div>
+        }
+
+        <div class="form-actions">
+          <button type="submit" class="btn primary">
+            {{ selectedPost ? 'Update Post' : 'Create Post' }}
+          </button>
+        </div>
+      </form>
+
+      <section class="comments-section">
+        <header class="comments-header">
+          <h3>Comments</h3>
+          <span class="meta">
+            @if (selectedPost) {
+              {{ (selectedPost.comments?.length || 0) }} comment(s)
+            } @else {
+              Select a post to view comments.
+            }
+          </span>
+        </header>
+
+        <div class="comments-list" [class.empty-state]="!selectedPost ? true : ((selectedPost.comments?.length ?? 0) === 0)">
+          @if (!selectedPost) {
+            <p>No post selected.</p>
+          } @else if (!selectedPost.comments?.length) {
+            <p>No comments yet. Add the first one below.</p>
+          } @else {
+            @for (comment of selectedPost.comments; track comment._id || $index) {
+              <div class="comment-item">
+                <p class="comment-text">{{ comment.text }}</p>
+                <div class="comment-meta">
+                  <span class="pill pill-author">{{ comment.commenter }}</span>
+                  <span class="pill pill-date">{{ formatDate(comment.createdAt) }}</span>
+                </div>
+              </div>
+            }
+          }
+        </div>
+
+        <form class="form inline-form" (ngSubmit)="addComment()" #commentForm="ngForm">
+          <div class="field compact">
+            <label for="commenter">Name</label>
+            <input
+              id="commenter"
+              name="commenter"
+              type="text"
+              [(ngModel)]="commentModel.commenter"
+              placeholder="Your name"
+              required
+            />
+          </div>
+          <div class="field compact">
+            <label for="commentText">Comment</label>
+            <input
+              id="commentText"
+              name="text"
+              type="text"
+              [(ngModel)]="commentModel.text"
+              placeholder="Add a comment (min 10 chars)"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn secondary"
+            [disabled]="!selectedPost"
+          >
+            Add Comment
+          </button>
+        </form>
+        @if (commentError) {
+          <div class="alert error small">{{ commentError }}</div>
+        }
+      </section>
+    </section>
+  </main>
+</div>

@@ -1,0 +1,360 @@
+/* MCP Blog - Global styles */
+:root {
+  --color-bg: #0f0f12;
+  --color-surface: #18181c;
+  --color-surface-elevated: #222228;
+  --color-border: #2d2d35;
+  --color-text: #e4e4e7;
+  --color-text-muted: #a1a1aa;
+  --color-accent: #6366f1;
+  --color-accent-hover: #818cf8;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-success: #22c55e;
+  --color-tech: #3b82f6;
+  --color-finance: #10b981;
+  --color-lifestyle: #f59e0b;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 1.5rem 2rem;
+}
+
+.brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.brand-pill {
+  background: var(--color-accent);
+  color: white;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 0;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  padding: 1.5rem;
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+}
+
+.editor-panel {
+  border-right: none;
+  border-left: 1px solid var(--color-border);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.btn {
+  font-family: inherit;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+
+  &:hover:not(:disabled) {
+    background: var(--color-surface-elevated);
+  }
+
+  &.primary {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+
+    &:hover {
+      background: var(--color-accent-hover);
+      border-color: var(--color-accent-hover);
+    }
+  }
+
+  &.secondary {
+    background: var(--color-surface-elevated);
+  }
+
+  &.danger {
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+
+    &:hover:not(:disabled) {
+      background: rgba(239, 68, 68, 0.15);
+    }
+  }
+
+  &.ghost {
+    border-color: transparent;
+  }
+
+  &.small {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.posts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  &.empty-state p {
+    color: var(--color-text-muted);
+  }
+}
+
+.post-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface-elevated);
+  }
+
+  &.selected {
+    border-color: var(--color-accent);
+    background: rgba(99, 102, 241, 0.08);
+  }
+}
+
+.post-main .post-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.post-main .post-body {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.pill {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: var(--color-surface-elevated);
+  color: var(--color-text-muted);
+}
+
+.pill-tech { background: rgba(59, 130, 246, 0.2); color: #93c5fd; }
+.pill-finance { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; }
+.pill-lifestyle { background: rgba(245, 158, 11, 0.2); color: #fcd34d; }
+
+.form .field {
+  margin-bottom: 1rem;
+}
+
+.form label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  color: var(--color-text);
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form .hint {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 0.25rem 0 0;
+}
+
+.form-actions {
+  margin-top: 1.5rem;
+}
+
+.alert {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin: 0.75rem 0;
+  font-size: 0.875rem;
+
+  &.error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #fca5a5;
+  }
+
+  &.success {
+    background: rgba(34, 197, 94, 0.15);
+    color: #86efac;
+  }
+
+  &.small {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+.comments-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.comments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.comments-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.comments-header .meta {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.comments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+
+  &.empty-state p {
+    color: var(--color-text-muted);
+  }
+}
+
+.comment-item {
+  background: var(--color-surface);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+}
+
+.comment-text {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+}
+
+.comment-meta {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.inline-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+@media (max-width: 600px) {
+  .inline-form {
+    grid-template-columns: 1fr;
+  }
+}
